@@ -2547,6 +2547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pogoStick: {fileID: 1598274713}
   mainMenuObject: {fileID: 1622033310}
+  cameraObject: {fileID: 963194225}
 --- !u!1001 &1960501345
 PrefabInstance:
   m_ObjectHideFlags: 0
