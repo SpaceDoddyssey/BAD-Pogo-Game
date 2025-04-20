@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class PogoManager : MonoBehaviour
 {
-    [SerializeField] private GameObject pogoStick, pogoCrossbar, pogoTip, pogoMetal;
+    [SerializeField] private GameObject pogoStick, pogoCrossbar, pogoTip, pogoMetal, rayObj;
     [SerializeField] private LayerMask pogoLayerMask;
     private float distFromBodyToMetal;
     private float castLength, stickLength;
     private Vector3 defaultMetalPos, defaultTipPos;
 
     private void Awake(){
-        distFromBodyToMetal = Vector3.Distance(pogoCrossbar.transform.localPosition, pogoMetal.transform.localPosition);
+        distFromBodyToMetal = Vector3.Distance(rayObj.transform.localPosition, pogoMetal.transform.localPosition);
         stickLength = pogoMetal.GetComponent<MeshRenderer>().bounds.extents.y;
-        castLength = stickLength + 0.01f / 2; 
+        castLength = Vector3.Distance(rayObj.transform.position, pogoTip.transform.position); 
         defaultMetalPos = pogoMetal.transform.localPosition;
         defaultTipPos = pogoTip.transform.localPosition;
     }
 
-    void Update(){
+    void FixedUpdate(){
         //Cast a ray down from the base of the metal to check if the tip is touching the ground
-        Vector3 rayOrigin = pogoMetal.transform.position;
+        Vector3 rayOrigin = rayObj.transform.position;
         Vector3 rayDirection = pogoStick.transform.up * -1;
         Debug.DrawRay(rayOrigin, rayDirection * castLength, Color.red);
     
@@ -33,13 +33,13 @@ public class PogoManager : MonoBehaviour
             pogoMetal.transform.position = pogoTip.transform.position + new Vector3(0, stickLength, 0);
         
             float pogoForce = 0.0f;
-            float distance = Vector3.Distance(pogoCrossbar.transform.localPosition, pogoMetal.transform.localPosition);
+            float distance = Vector3.Distance(rayObj.transform.localPosition, pogoMetal.transform.localPosition);
             if(distance < distFromBodyToMetal){
                 pogoForce = Mathf.Lerp(0, 7, (distFromBodyToMetal - distance) / distFromBodyToMetal);
             }
+            Debug.Log(string.Format("Distance: {0},  DfBtM:  {1, 6:0.00},  Pogoforce:  {2}", distance, distFromBodyToMetal, pogoForce));
 
             Vector3 upVector = pogoStick.transform.up;
-            Debug.Log("Dot: " + Vector3.Dot(upVector, Vector3.up));
             if(Vector3.Dot(upVector, Vector3.up) > 0.99f){
                 upVector = Vector3.up;
             }
