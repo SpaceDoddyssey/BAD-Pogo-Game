@@ -16,8 +16,8 @@ public class NewBehaviourScript : MonoBehaviour
         {
             mainMenuObject.SetActive(false);
             pogoStick.GetComponent<RotateOnY>().enabled = false;
-            pogoStick.transform.DORotate(new Vector3(0, 0, 0), 2.0f);
-            pogoStick.transform.DOMove(cameraObject.transform.position + new Vector3(0, -4, 8), 2.0f).OnComplete(() => {
+            pogoStick.transform.DORotate(new Vector3(0, 0, 0), 1.0f);
+            pogoStick.transform.DOMove(cameraObject.transform.position + new Vector3(0, -2, 5), 1.0f).OnComplete(() => {
                 cameraObject.transform.parent = pogoStick.transform;
                 pogoStick.GetComponent<Rigidbody>().isKinematic = false;
             });
